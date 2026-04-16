@@ -15,39 +15,27 @@ export default function Features() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate each feature block on scroll
-      gsap.utils.toArray<HTMLElement>(".feat-block").forEach((block) => {
-        const widget = block.querySelector(".feat-widget");
-        const text = block.querySelector(".feat-text");
-
-        gsap.fromTo(
-          widget,
-          { opacity: 0, x: block.classList.contains("feat-reversed") ? 60 : -60, scale: 0.95 },
-          {
-            opacity: 1, x: 0, scale: 1,
-            duration: 1.2, ease: "expo.out",
-            scrollTrigger: { trigger: block, start: "top 80%", toggleActions: "play none none none" },
-          }
-        );
-        gsap.fromTo(
-          text,
-          { opacity: 0, x: block.classList.contains("feat-reversed") ? -40 : 40 },
-          {
-            opacity: 1, x: 0,
-            duration: 1.1, ease: "expo.out", delay: 0.15,
-            scrollTrigger: { trigger: block, start: "top 80%", toggleActions: "play none none none" },
-          }
-        );
-      });
-
-      // Section header
+      // Header animation
       const header = sectionRef.current?.querySelector(".feat-header");
       if (header) {
         gsap.fromTo(header, { opacity: 0, y: 40 }, {
           opacity: 1, y: 0, duration: 1.1, ease: "expo.out",
-          scrollTrigger: { trigger: header, start: "top 85%", toggleActions: "play none none none" },
+          scrollTrigger: { trigger: header, start: "top 85%", toggleActions: "play none none none" }
         });
       }
+
+      // Bento box reveal animations
+      gsap.utils.toArray<HTMLElement>(".feat-bento-item").forEach((box, i) => {
+        gsap.fromTo(
+          box,
+          { opacity: 0, y: 60, scale: 0.96 },
+          {
+            opacity: 1, y: 0, scale: 1,
+            duration: 1.2, ease: "expo.out", delay: (i % 3) * 0.1,
+            scrollTrigger: { trigger: box, start: "top 85%", toggleActions: "play none none none" },
+          }
+        );
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -57,92 +45,76 @@ export default function Features() {
     <section ref={sectionRef} id="features" className="feat-section">
       {/* Section Header */}
       <div className="feat-header" style={{ opacity: 0 }}>
-        <span className="feat-badge">FEATURES</span>
+        <span className="feat-badge">POWERFUL TOOLS</span>
         <h2 className="feat-title">
           Everything you need to create <span className="feat-title-accent">incredible videos</span>
         </h2>
         <p className="feat-subtitle">
-          From prompt to masterpiece — powerful tools that make AI video generation effortless.
+          From prompt to masterpiece — powerful tools that make AI video generation effortless, all wrapped in a stunning interface.
         </p>
       </div>
 
-      {/* Feature 1: Multi-Model AI — Widget LEFT */}
-      <div className="feat-block">
-        <div className="feat-widget" style={{ opacity: 0 }}>
-          <ModelSelectorWidget />
-        </div>
-        <div className="feat-text" style={{ opacity: 0 }}>
-          <span className="feat-num">01</span>
-          <h3 className="feat-heading">Multi-Model Intelligence</h3>
-          <p className="feat-desc">
-            Access the world&apos;s most powerful AI video models — Sora, Runway Gen-4, Kling, Pika, and more — all from a single interface. 
-            Compare outputs, switch models instantly, and always use the best tool for the job.
-          </p>
-          <div className="feat-tags">
-            <span className="feat-tag">10+ Models</span>
-            <span className="feat-tag">Auto-Select</span>
-            <span className="feat-tag">Side-by-Side</span>
+      {/* Bento Grid layout */}
+      <div className="feat-bento-grid">
+        
+        {/* Box 1: Multi-Source Input (Large) */}
+        <div className="feat-bento-item feat-bento-large" style={{ opacity: 0 }}>
+          <div className="feat-bento-content">
+            <div className="feat-bento-badge">Multi-Source Input</div>
+            <h3 className="feat-bento-heading">Create From Anything</h3>
+            <p className="feat-bento-desc">
+              Start with whatever inspires you — a text prompt, a photo, an existing video, or even audio. 
+              Our AI understands your intent and transforms any input into stunning video content.
+            </p>
+          </div>
+          <div className="feat-bento-widget-wrapper">
+            <SourceInputWidget />
           </div>
         </div>
-      </div>
 
-      {/* Feature 2: Multi-Source Input — Widget RIGHT */}
-      <div className="feat-block feat-reversed">
-        <div className="feat-text" style={{ opacity: 0 }}>
-          <span className="feat-num">02</span>
-          <h3 className="feat-heading">Create From Anything</h3>
-          <p className="feat-desc">
-            Start with whatever inspires you — a text prompt, a photo, an existing video, or even audio. 
-            Our AI understands your intent and transforms any input into stunning video content.
-          </p>
-          <div className="feat-tags">
-            <span className="feat-tag">Text-to-Video</span>
-            <span className="feat-tag">Image-to-Video</span>
-            <span className="feat-tag">Video-to-Video</span>
+        {/* Box 2: Multi-Model (Medium) */}
+        <div className="feat-bento-item feat-bento-medium" style={{ opacity: 0 }}>
+          <div className="feat-bento-content">
+            <div className="feat-bento-badge">AI Models</div>
+            <h3 className="feat-bento-heading">Ultimate Output</h3>
+            <p className="feat-bento-desc">
+              Switch between Sora, Runway, Kling and more, finding the best model for your exact use-case.
+            </p>
+          </div>
+          <div className="feat-bento-widget-wrapper">
+            <ModelSelectorWidget />
           </div>
         </div>
-        <div className="feat-widget" style={{ opacity: 0 }}>
-          <SourceInputWidget />
-        </div>
-      </div>
 
-      {/* Feature 3: Community & Explore — Widget LEFT */}
-      <div className="feat-block">
-        <div className="feat-widget" style={{ opacity: 0 }}>
-          <CommunityWidget />
-        </div>
-        <div className="feat-text" style={{ opacity: 0 }}>
-          <span className="feat-num">03</span>
-          <h3 className="feat-heading">Explore &amp; Get Inspired</h3>
-          <p className="feat-desc">
-            Discover stunning videos created by a global community of creators. 
-            Browse trending content, save your favorites, remix ideas, and share your own creations with the world.
-          </p>
-          <div className="feat-tags">
-            <span className="feat-tag">Trending Feed</span>
-            <span className="feat-tag">Remix Prompts</span>
-            <span className="feat-tag">Social Sharing</span>
+        {/* Box 3: Community (Medium) */}
+        <div className="feat-bento-item feat-bento-medium" style={{ opacity: 0 }}>
+          <div className="feat-bento-content">
+            <div className="feat-bento-badge">Community</div>
+            <h3 className="feat-bento-heading">Discover & Remix</h3>
+            <p className="feat-bento-desc">
+              Explore trending generations from users around the globe. Get inspired by their prompts.
+            </p>
+          </div>
+          <div className="feat-bento-widget-wrapper" style={{ marginTop: 'auto', marginBottom: '-20px', marginLeft: '-20px', marginRight: '-20px' }}>
+            <div style={{ transform: 'scale(0.9)', transformOrigin: 'top center' }}>
+              <CommunityWidget />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Feature 4: Generation Dashboard — Widget RIGHT */}
-      <div className="feat-block feat-reversed">
-        <div className="feat-text" style={{ opacity: 0 }}>
-          <span className="feat-num">04</span>
-          <h3 className="feat-heading">Real-Time Generation</h3>
-          <p className="feat-desc">
-            Watch your vision come to life in real time. Track generation progress, preview frames as they render, 
-            and fine-tune parameters on the fly. Full control, zero guesswork.
-          </p>
-          <div className="feat-tags">
-            <span className="feat-tag">Live Preview</span>
-            <span className="feat-tag">Frame-by-Frame</span>
-            <span className="feat-tag">Smart Queue</span>
+        {/* Box 4: Generation Dashboard (Large) */}
+        <div className="feat-bento-item feat-bento-large" style={{ opacity: 0 }}>
+          <div className="feat-bento-content" style={{ maxWidth: '400px' }}>
+            <div className="feat-bento-badge feat-bento-badge-live">Live Render</div>
+            <h3 className="feat-bento-heading">Real-Time Generation</h3>
+            <p className="feat-bento-desc">
+              Watch your vision come to life in real time. Track generation progress, preview frames as they render, 
+              and fine-tune parameters on the fly. Full control, zero guesswork.
+            </p>
           </div>
-        </div>
-        <div className="feat-widget" style={{ opacity: 0 }}>
-          <GenerationDashboardWidget />
+          <div className="feat-bento-widget-wrapper feat-bento-absolute-right">
+            <GenerationDashboardWidget />
+          </div>
         </div>
       </div>
 
@@ -150,42 +122,42 @@ export default function Features() {
         .feat-section {
           position: relative;
           padding: 120px 20px 140px;
-          background: #fff;
+          background: #fafafa; /* Keep light mode app theme */
           overflow: hidden;
         }
 
         .feat-header {
           text-align: center;
           max-width: 660px;
-          margin: 0 auto 90px;
+          margin: 0 auto 80px;
         }
 
         .feat-badge {
           display: inline-block;
           font-family: var(--font-body);
           font-size: 11px;
-          font-weight: 600;
+          font-weight: 700;
           letter-spacing: 0.14em;
-          color: var(--purple);
-          background: rgba(108, 92, 231, 0.07);
-          border: 1px solid rgba(108, 92, 231, 0.12);
+          color: var(--purple-vivid);
+          background: rgba(139, 92, 246, 0.08);
+          border: 1px solid rgba(139, 92, 246, 0.12);
           padding: 6px 16px;
           border-radius: 100px;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
         }
 
         .feat-title {
           font-family: var(--font-display);
-          font-size: clamp(2rem, 4.5vw, 3.2rem);
+          font-size: clamp(2.2rem, 4.5vw, 3.8rem);
           font-weight: 800;
           letter-spacing: -0.03em;
-          line-height: 1.1;
+          line-height: 1.05;
           color: #0a0a0a;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
 
         .feat-title-accent {
-          background: linear-gradient(135deg, var(--purple), var(--purple-vivid));
+          background: linear-gradient(135deg, #06b6d4, #3b82f6);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -193,95 +165,125 @@ export default function Features() {
 
         .feat-subtitle {
           font-family: var(--font-body);
-          font-size: clamp(14px, 1.6vw, 17px);
-          color: #888;
-          line-height: 1.7;
+          font-size: clamp(15px, 1.6vw, 18px);
+          color: #777;
+          line-height: 1.6;
         }
 
-        /* ── Feature Block Layout ── */
-        .feat-block {
+        /* ── Bento Grid Layout ── */
+        .feat-bento-grid {
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          grid-auto-rows: minmax(440px, auto);
+          gap: 24px;
+          max-width: 1160px;
+          margin: 0 auto;
+        }
+
+        .feat-bento-item {
+          background: #fff;
+          border-radius: 36px;
+          border: 1px solid #e5e5ea;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.02);
+          padding: 40px;
           display: flex;
-          align-items: center;
-          gap: 60px;
-          max-width: 1100px;
-          margin: 0 auto 100px;
-          padding: 0 20px;
+          flex-direction: column;
+          position: relative;
+          overflow: hidden;
         }
 
-        .feat-block:last-of-type {
-          margin-bottom: 0;
+        /* Glow effects for bento boxes */
+        .feat-bento-large {
+          grid-column: span 8;
+        }
+        
+        .feat-bento-medium {
+          grid-column: span 4;
         }
 
-        .feat-reversed {
-          /* text is first in DOM, widget second → text LEFT, widget RIGHT */
+        .feat-bento-content {
+          position: relative;
+          z-index: 10;
+          margin-bottom: 30px;
         }
 
-        @media (max-width: 860px) {
-          .feat-block,
-          .feat-reversed {
-            flex-direction: column;
-            gap: 36px;
-          }
-          .feat-widget {
-            width: 100% !important;
-            max-width: 440px !important;
-          }
-        }
-
-        .feat-widget {
-          flex: 0 0 48%;
-          max-width: 500px;
-        }
-
-        .feat-text {
-          flex: 1;
-          min-width: 0;
-        }
-
-        .feat-num {
+        .feat-bento-badge {
           display: inline-block;
-          font-family: var(--font-body);
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          color: var(--purple);
-          margin-bottom: 14px;
-          opacity: 0.7;
-        }
-
-        .feat-heading {
-          font-family: var(--font-display);
-          font-size: clamp(1.5rem, 3vw, 2.2rem);
-          font-weight: 800;
-          letter-spacing: -0.025em;
-          line-height: 1.15;
-          color: #0a0a0a;
+          font-size: 11px;
+          font-weight: 600;
+          color: #888;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
           margin-bottom: 16px;
         }
 
-        .feat-desc {
-          font-family: var(--font-body);
-          font-size: clamp(14px, 1.5vw, 16px);
-          color: #777;
-          line-height: 1.75;
-          margin-bottom: 20px;
+        .feat-bento-badge-live {
+          color: #10b981;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+        
+        .feat-bento-badge-live::before {
+          content: "";
+          display: block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #10b981;
+          animation: pulse-dot 2s infinite;
         }
 
-        .feat-tags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
+        .feat-bento-heading {
+          font-family: var(--font-display);
+          font-size: clamp(1.4rem, 2.5vw, 2rem);
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          color: #111;
+          margin-bottom: 12px;
+          line-height: 1.1;
         }
 
-        .feat-tag {
+        .feat-bento-desc {
           font-family: var(--font-body);
-          font-size: 12px;
-          font-weight: 500;
-          color: #888;
-          background: #f5f5f7;
-          border: 1px solid #eee;
-          padding: 5px 14px;
-          border-radius: 100px;
+          font-size: 15px;
+          color: #666;
+          line-height: 1.6;
+        }
+
+        .feat-bento-widget-wrapper {
+          position: relative;
+          z-index: 5;
+          flex: 1;
+        }
+
+        .feat-bento-absolute-right {
+          position: absolute;
+          right: -30px;
+          bottom: -30px;
+          width: 100%;
+          max-width: 460px;
+          transform: scale(0.95);
+          transform-origin: bottom right;
+        }
+
+        @media (max-width: 960px) {
+          .feat-bento-large, .feat-bento-medium {
+            grid-column: span 12;
+          }
+          .feat-bento-absolute-right {
+            position: relative;
+            right: 0;
+            bottom: 0;
+            max-width: 100%;
+            transform: scale(1);
+          }
+        }
+        
+        @media (max-width: 640px) {
+          .feat-bento-item {
+            padding: 30px 20px;
+          }
         }
       `}</style>
     </section>
@@ -387,14 +389,19 @@ function ModelSelectorWidget() {
         .w-model-card:hover {
           border-color: #e0e0e5;
           background: #f5f5f8;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .w-model-card:active {
+          transform: translateY(0) scale(0.98);
         }
 
         .w-model-active {
           border-color: var(--purple) !important;
           background: var(--purple-glow) !important;
           box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+          transform: translateY(-1px);
         }
 
         .w-model-icon {
@@ -409,6 +416,11 @@ function ModelSelectorWidget() {
           font-weight: 800;
           font-family: var(--font-display);
           flex-shrink: 0;
+          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .w-model-card:hover .w-model-icon {
+          transform: scale(1.15) rotate(-4deg);
         }
 
         .w-model-info {
@@ -780,6 +792,19 @@ function SourceInputWidget() {
           overflow: hidden;
         }
 
+        .w-src-img-mock::before, .w-src-vid-mock::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+          transform: translateX(-100%);
+          animation: shimmer 2.5s infinite;
+        }
+
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+
         .w-src-img-mock::after {
           content: "🏔";
           position: absolute;
@@ -787,6 +812,11 @@ function SourceInputWidget() {
           left: 50%;
           transform: translate(-50%, -50%);
           font-size: 32px;
+          transition: transform 0.3s ease;
+        }
+        
+        .w-src-img-mock:hover::after {
+          transform: translate(-50%, -50%) scale(1.2);
         }
 
         .w-src-vid-mock {
@@ -826,6 +856,7 @@ function SourceInputWidget() {
           width: 35%;
           background: var(--purple);
           border-radius: 100px;
+          transition: width 0.1s linear;
         }
 
         .w-src-vid-handle {
@@ -839,6 +870,13 @@ function SourceInputWidget() {
           background: var(--purple);
           border: 2px solid #fff;
           box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          cursor: pointer;
+        }
+        
+        .w-src-vid-placeholder:hover .w-src-vid-handle {
+          transform: translate(-50%, -50%) scale(1.3);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.25);
         }
 
         .w-src-img-filename {
@@ -1020,6 +1058,11 @@ function CommunityWidget() {
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .w-comm-card:hover .w-comm-thumb {
+          transform: scale(1.06);
         }
 
         .w-comm-play {
@@ -1032,12 +1075,14 @@ function CommunityWidget() {
           align-items: center;
           justify-content: center;
           opacity: 0;
-          transition: opacity 0.25s ease;
+          transition: all 0.3s ease;
           padding-left: 2px;
+          transform: scale(0.8);
         }
 
         .w-comm-card:hover .w-comm-play {
           opacity: 1;
+          transform: scale(1.1);
         }
 
         .w-comm-meta {
@@ -1299,6 +1344,22 @@ function GenerationDashboardWidget() {
           border-radius: 100px;
           transition: width 0.15s linear;
           position: relative;
+          overflow: hidden;
+        }
+
+        .w-gen-progress-fill::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+          animation: progress-shimmer 1.5s infinite;
+        }
+
+        @keyframes progress-shimmer {
+          100% { left: 150%; }
         }
 
         /* Frames */
@@ -1338,6 +1399,12 @@ function GenerationDashboardWidget() {
         .w-gen-frame-rendered {
           border-color: transparent;
           animation: frameIn 0.3s ease;
+        }
+        
+        .w-gen-frame-rendered:hover {
+          transform: translateY(-6px) scale(1.15);
+          z-index: 10;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.12);
         }
 
         @keyframes frameIn {

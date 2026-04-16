@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function Hero() {
@@ -45,19 +45,26 @@ export default function Hero() {
         { opacity: 1, y: 0, scale: 1, duration: 0.6 },
         "-=0.3"
       )
-      .fromTo(
-        phonesRef.current?.querySelectorAll(".hero-phone") || [],
-        { opacity: 0, y: 100, scale: 0.88 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.4,
-          stagger: 0.12,
-          ease: "expo.out",
-        },
+    // Animate phones with specific rotations for side ones
+    const phones = phonesRef.current?.querySelectorAll(".hero-phone");
+    if (phones && phones.length >= 3) {
+      tl.fromTo(
+        phones[0], // Left phone
+        { opacity: 0, y: 100, scale: 0.88, rotateY: 0 },
+        { opacity: 1, y: 0, scale: 1, rotateY: 15, rotateX: 2, duration: 1.4, ease: "expo.out" },
         "-=0.4"
+      ).fromTo(
+        phones[1], // Center phone
+        { opacity: 0, y: 100, scale: 0.88 },
+        { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: "expo.out" },
+        "-=1.2"
+      ).fromTo(
+        phones[2], // Right phone
+        { opacity: 0, y: 100, scale: 0.88, rotateY: 0 },
+        { opacity: 1, y: 0, scale: 1, rotateY: -15, rotateX: 2, duration: 1.4, ease: "expo.out" },
+        "-=1.2"
       );
+    }
   }, []);
 
   return (
@@ -89,11 +96,9 @@ export default function Hero() {
           and share with a vibrant community.
         </p>
 
-        {/* CTA */}
-        <div ref={ctaRef} className="hero-cta-wrapper" style={{ opacity: 0 }}>
-          <a href="/download" className="hero-cta-button">
-            Start creating now
-          </a>
+        {/* CTA -> Replaced by Prompt Widget */}
+        <div ref={ctaRef} style={{ opacity: 0, width: "100%" }}>
+          <HeroPromptWidget />
         </div>
       </div>
 
@@ -306,7 +311,7 @@ function PhoneMockup({ variant }: { variant: "explore" | "generate" | "result" }
         flexShrink: 0,
       }}
     >
-      {/* Phone frame */}
+      {/* Outer shell matching premium DownloadVisuals style */}
       <div
         style={{
           position: "absolute",
@@ -314,7 +319,7 @@ function PhoneMockup({ variant }: { variant: "explore" | "generate" | "result" }
           borderRadius: isCenter ? 40 : 36,
           background: "linear-gradient(160deg, #f0f0f0 0%, #e0e0e0 40%, #c8c8c8 100%)",
           boxShadow: `
-            0 30px 80px rgba(0,0,0,0.15),
+            0 30px 80px rgba(0,0,0,0.12),
             0 10px 30px rgba(0,0,0,0.08),
             0 0 1px rgba(0,0,0,0.2),
             inset 0 1px 0 rgba(255,255,255,1)
@@ -322,7 +327,7 @@ function PhoneMockup({ variant }: { variant: "explore" | "generate" | "result" }
         }}
       />
 
-      {/* Screen */}
+      {/* Screen area with inner glow/border */}
       <div
         style={{
           position: "absolute",
@@ -330,6 +335,7 @@ function PhoneMockup({ variant }: { variant: "explore" | "generate" | "result" }
           borderRadius: isCenter ? 38 : 34,
           background: "#fff",
           overflow: "hidden",
+          boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)",
         }}
       >
         {/* Dynamic Island */}
@@ -373,7 +379,7 @@ function PhoneMockup({ variant }: { variant: "explore" | "generate" | "result" }
           style={{
             width: "100%",
             height: "100%",
-            paddingTop: isCenter ? 50 : 44,
+            paddingTop: isCenter ? 55 : 48,
             paddingLeft: 12,
             paddingRight: 12,
             paddingBottom: 12,
@@ -391,11 +397,11 @@ function PhoneMockup({ variant }: { variant: "explore" | "generate" | "result" }
         </div>
       </div>
 
-      {/* Side buttons */}
-      <div style={{ position: "absolute", right: -1.5, top: isCenter ? 110 : 90, width: 2.5, height: 30, background: "#ccc", borderRadius: "0 2px 2px 0" }} />
-      <div style={{ position: "absolute", left: -1.5, top: isCenter ? 90 : 75, width: 2.5, height: 18, background: "#ccc", borderRadius: "2px 0 0 2px" }} />
-      <div style={{ position: "absolute", left: -1.5, top: isCenter ? 120 : 100, width: 2.5, height: 30, background: "#ccc", borderRadius: "2px 0 0 2px" }} />
-      <div style={{ position: "absolute", left: -1.5, top: isCenter ? 160 : 140, width: 2.5, height: 30, background: "#ccc", borderRadius: "2px 0 0 2px" }} />
+      {/* Side buttons matching premium styling */}
+      <div style={{ position: "absolute", right: -1.5, top: isCenter ? 110 : 90, width: 2.5, height: 32, background: "#ccc", borderRadius: "0 2px 2px 0", boxShadow: "0 1px 2px rgba(0,0,0,0.12)" }} />
+      <div style={{ position: "absolute", left: -1.5, top: isCenter ? 90 : 75, width: 2.5, height: 20, background: "#ccc", borderRadius: "2px 0 0 2px", boxShadow: "0 1px 2px rgba(0,0,0,0.12)" }} />
+      <div style={{ position: "absolute", left: -1.5, top: isCenter ? 120 : 100, width: 2.5, height: 32, background: "#ccc", borderRadius: "2px 0 0 2px", boxShadow: "0 1px 2px rgba(0,0,0,0.12)" }} />
+      <div style={{ position: "absolute", left: -1.5, top: isCenter ? 160 : 140, width: 2.5, height: 32, background: "#ccc", borderRadius: "2px 0 0 2px", boxShadow: "0 1px 2px rgba(0,0,0,0.12)" }} />
     </div>
   );
 }
@@ -679,5 +685,186 @@ function ResultScreen() {
         Share to Community
       </div>
     </>
+  );
+}
+
+
+/* ─── Hero Prompt Widget ─── */
+
+function HeroPromptWidget() {
+  const [activeTab, setActiveTab] = useState("video");
+  
+  return (
+    <div className="hero-prompt-widget">
+      <div className="hp-tabs">
+        <button className={`hp-tab ${activeTab === 'video' ? 'hp-tab-active' : ''}`} onClick={() => setActiveTab('video')}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+          Video
+        </button>
+        <button className={`hp-tab ${activeTab === 'image' ? 'hp-tab-active' : ''}`} onClick={() => setActiveTab('image')}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          Image
+        </button>
+        <button className={`hp-tab ${activeTab === 'text' ? 'hp-tab-active' : ''}`} onClick={() => setActiveTab('text')}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7V4h16v3"></path><path d="M9 20h6"></path><path d="M12 4v16"></path></svg>
+          Text
+        </button>
+      </div>
+      <div className="hp-input-container">
+        <textarea 
+          className="hp-input" 
+          placeholder={
+            activeTab === 'video' ? "Describe the video you want to generate (e.g., A cinematic drone shot over a glowing cyberpunk city...)" :
+            activeTab === 'image' ? "Describe the image you want to create (e.g., A majestic lion with neon glowing fur in a dark forest...)" :
+            "Write a prompt to generate specialized text formatting..."
+          }
+        />
+        <div className="hp-actions">
+          <div className="hp-options">
+            <button className="hp-option-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              Upload
+            </button>
+            <button className="hp-option-btn">
+              <span style={{fontWeight: 700}}>S</span> Sora v2
+            </button>
+          </div>
+          <a href="/download" className="hp-generate-btn">
+            ✨ Generate
+          </a>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .hero-prompt-widget {
+          width: 100%;
+          max-width: 640px;
+          margin: 0 auto 60px;
+          background: #fff;
+          border-radius: 20px;
+          padding: 6px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.03);
+          border: 1px solid #f0f0f2;
+          transform-origin: center;
+          transition: all 0.3s ease;
+        }
+
+        .hero-prompt-widget:hover {
+          box-shadow: 0 12px 48px rgba(99, 102, 241, 0.12), 0 2px 8px rgba(0,0,0,0.04);
+          border-color: #e5e5ea;
+        }
+
+        .hp-tabs {
+          display: flex;
+          gap: 4px;
+          padding: 6px 10px;
+          border-bottom: 1px solid #f5f5f7;
+        }
+
+        .hp-tab {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 16px;
+          border-radius: 100px;
+          background: transparent;
+          border: none;
+          font-family: var(--font-body);
+          font-size: 13px;
+          font-weight: 600;
+          color: #888;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .hp-tab:hover {
+          color: #444;
+          background: #f8f8fa;
+        }
+
+        .hp-tab-active {
+          background: #f0f0f4 !important;
+          color: #111;
+        }
+
+        .hp-input-container {
+          padding: 12px;
+        }
+
+        .hp-input {
+          width: 100%;
+          min-height: 80px;
+          border: none;
+          resize: none;
+          font-family: var(--font-body);
+          font-size: 15px;
+          color: #333;
+          background: transparent;
+          outline: none;
+          line-height: 1.5;
+        }
+
+        .hp-input::placeholder {
+          color: #bbb;
+        }
+
+        .hp-actions {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
+        }
+
+        .hp-options {
+          display: flex;
+          gap: 8px;
+        }
+
+        .hp-option-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border-radius: 8px;
+          background: #f8f8fa;
+          border: 1px solid #eee;
+          font-family: var(--font-body);
+          font-size: 12px;
+          font-weight: 500;
+          color: #555;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .hp-option-btn:hover {
+          background: #f0f0f4;
+          border-color: #ddd;
+        }
+
+        .hp-generate-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          padding: 10px 24px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #6366F1, #8B5CF6);
+          color: #fff;
+          font-family: var(--font-body);
+          font-size: 14px;
+          font-weight: 600;
+          text-decoration: none;
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+
+        .hp-generate-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+        }
+      `}</style>
+    </div>
   );
 }

@@ -2,7 +2,8 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Features from "./components/Features";
 import Reviews from "./components/Reviews";
-import CTA from "./components/CTA";
+
+import DownloadSection from "./components/DownloadSection";
 import Footer from "./components/Footer";
 
 export default function Home() {
@@ -13,7 +14,8 @@ export default function Home() {
         <Hero />
         <Features />
         <Reviews />
-        <CTA />
+
+        <DownloadSection />
       </main>
       <Footer />
     </div>
