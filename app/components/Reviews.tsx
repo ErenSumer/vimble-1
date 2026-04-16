@@ -191,28 +191,27 @@ export default function Reviews() {
           display: inline-block;
           font-family: var(--font-body);
           font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 0.14em;
-          color: var(--purple);
-          background: rgba(99, 102, 241, 0.07);
-          border: 1px solid rgba(99, 102, 241, 0.12);
-          padding: 6px 16px;
+          font-weight: 700;
+          letter-spacing: 0.15em;
+          color: #fff;
+          background: #111;
+          padding: 8px 16px;
           border-radius: 100px;
-          margin-bottom: 20px;
+          margin-bottom: 28px;
         }
 
         .rev-title {
           font-family: var(--font-display);
-          font-size: clamp(2rem, 4.5vw, 3.2rem);
-          font-weight: 600;
+          font-size: clamp(2.8rem, 5vw, 4.2rem);
+          font-weight: 800;
           letter-spacing: -0.03em;
-          line-height: 1.1;
-          color: #0a0a0a;
-          margin-bottom: 16px;
+          line-height: 1.05;
+          color: #111;
+          margin-bottom: 22px;
         }
 
         .rev-title-accent {
-          background: linear-gradient(135deg, var(--purple), var(--purple-vivid));
+          background: linear-gradient(135deg, #06b6d4, #3b82f6);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -220,9 +219,11 @@ export default function Reviews() {
 
         .rev-subtitle {
           font-family: var(--font-body);
-          font-size: clamp(14px, 1.6vw, 17px);
-          color: #888;
-          line-height: 1.7;
+          font-size: clamp(15px, 1.6vw, 18px);
+          color: #555;
+          line-height: 1.6;
+          font-weight: 400;
+          opacity: 0.9;
         }
 
         /* ── Track Container ── */
@@ -292,11 +293,11 @@ export default function Reviews() {
           user-select: none;
         }
 
-        .rev-card:hover {
-          border-color: rgba(99, 102, 241, 0.15);
+         .rev-card:hover {
+          border-color: rgba(6, 182, 212, 0.15);
           box-shadow:
             0 8px 30px rgba(0, 0, 0, 0.04),
-            0 0 0 1px rgba(99, 102, 241, 0.08);
+            0 0 0 1px rgba(6, 182, 212, 0.08);
           transform: translateY(-3px);
         }
 
@@ -329,7 +330,7 @@ export default function Reviews() {
         .rev-name {
           font-family: var(--font-display);
           font-size: 15px;
-          font-weight: 600;
+          font-weight: 500;
           color: #111;
           letter-spacing: -0.01em;
         }
@@ -359,9 +360,10 @@ export default function Reviews() {
         .rev-text {
           font-family: var(--font-body);
           font-size: 14px;
-          color: #555;
+          color: #666;
           line-height: 1.7;
           letter-spacing: 0.005em;
+          font-weight: 400;
         }
       `}</style>
     </section>
